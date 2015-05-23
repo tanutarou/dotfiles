@@ -14,6 +14,9 @@ colorscheme molokai
 "文字コード
 "set fileencodings=cp932
 
+"フォント
+"set guifont=Ricty
+
 "---------------------------
 " Start Neobundle Settings.
 "---------------------------
@@ -36,6 +39,17 @@ NeoBundle 'Shougo/vimproc', {
 
 " ソースコードを素早く実行
 NeoBundle 'thinca/vim-quickrun'
+" テンプレート
+NeoBundle 'mattn/sonictemplate-vim'
+" 入力補完
+NeoBundle 'Shougo/neocomplcache'
+" スニペット補完
+NeoBundle 'Shougo/neosnippet'
+NeoBundle 'Shougo/neosnippet-snippets'
+" Python
+NeoBundle 'davidhalter/jedi-vim'
+" Vim shell
+NeoBundle 'Shougo/vimshell.vim'
 
 call neobundle#end()
  
@@ -49,6 +63,98 @@ NeoBundleCheck
 " End Neobundle Settings.
 "-------------------------
 
+"---------------------------
+" Start quickrun Settings.
+"---------------------------
 " <C-c> で実行を強制終了させる
 " quickrun.vim が実行していない場合には <C-c> を呼び出す
 nnoremap <expr><silent> <C-c> quickrun#is_running() ? quickrun#sweep_sessions() : "\<C-c>"
+
+"---------------------------
+" End quickrun Settings.
+"---------------------------
+
+" Clipboadを標準入力として実行する
+map <F6> :call TestIt() <CR>
+function TestIt()
+let l:test = substitute(@+, "'", "", "g")
+let l:file = @%
+write
+let l:output = system("g++ -std=c++11 -Wall -Wextra -O2 -pedantic -Wfloat-equal -Wconversion -D_GLIBCXX_DEBUG -D_GLIBCXX_DEBUG_PEDANTIC -fsanitize=undefined '".file."' -g && (ulimit -c unlimited; echo '".test."' | ./a.out)")
+echo l:output
+endfunction
+
+"---------------------------
+" Start neocomplcache Settings.
+"---------------------------
+" Disable AutoComplPop.
+let g:acp_enableAtStartup = 0
+" Use neocomplcache.
+let g:neocomplcache_enable_at_startup = 1
+" Use smartcase.
+let g:neocomplcache_enable_smart_case = 1
+" Set minimum syntax keyword length.
+let g:neocomplcache_min_syntax_length = 3
+let g:neocomplcache_lock_buffer_name_pattern = '\*ku\*'
+
+" Define dictionary.
+let g:neocomplcache_dictionary_filetype_lists = {
+    \ 'default' : ''
+    \ }
+
+" Plugin key-mappings.
+inoremap <expr><C-g>     neocomplcache#undo_completion()
+inoremap <expr><C-l>     neocomplcache#complete_common_string()
+
+" Recommended key-mappings.
+" <CR>: close popup and save indent.
+inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+function! s:my_cr_function()
+  return neocomplcache#smart_close_popup() . "\<CR>"
+endfunction
+" <TAB>: completion.
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+" <C-h>, <BS>: close popup and delete backword char.
+inoremap <expr><C-h> neocomplcache#smart_close_popup()."\<C-h>"
+inoremap <expr><BS> neocomplcache#smart_close_popup()."\<C-h>"
+inoremap <expr><C-y>  neocomplcache#close_popup()
+inoremap <expr><C-e>  neocomplcache#cancel_popup()
+"---------------------------
+" End neocomplcache Settings.
+"---------------------------
+
+"---------------------------
+" Start neosnippet Settings.
+"---------------------------
+" Plugin key-mappings.
+imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+
+" SuperTab like snippets behavior.
+imap <expr><TAB> neosnippet#expandable() <Bar><bar> neosnippet#jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : pumvisible() ? "\<C-n>" : "\<TAB>"
+smap <expr><TAB> neosnippet#expandable() <Bar><bar> neosnippet#jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+
+" For snippet_complete marker.
+if has('conceal')
+  set conceallevel=2 concealcursor=i
+endif
+
+" my snippetファイルの場所を定義
+let s:my_snippet = '~/.vim/snippets/'
+let g:neosnippet#snippets_directory = s:my_snippet
+"---------------------------
+" Start neosnippet Settings.
+"---------------------------
+
+"Quick <ESC>
+imap <C-j> <ESC>
+
+" VimShell関連
+" ,rs: run shell シェルを起動
+nnoremap <silent> ,rs :VimShell<CR>
+" ,rpy: run python pythonを非同期で起動
+nnoremap <silent> ,rpy : VimShellInteractive python<CR>
+" ,ss: send string 非同期で開いたインタプリタに現在の行を評価させる
+vmap <silent> ,ss :VimShellSendString<CR>
+" 選択中に,ss: 非同期で開いたインタプリタに選択行を評価させる
+nnoremap <silent> ,ss <S-V>:VimShellSendString<CR>
