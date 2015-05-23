@@ -7,6 +7,10 @@ set shiftwidth=4
 set autoindent
 "行番号表示
 set number
+" 小文字のみで検索したときに大文字小文字を無視
+set smartcase
+" 検索ワードの最初の文字を入力した時点で検索を開始する
+set incsearch
 
 "カラースキーマ
 colorscheme molokai
@@ -50,6 +54,12 @@ NeoBundle 'Shougo/neosnippet-snippets'
 NeoBundle 'davidhalter/jedi-vim'
 " Vim shell
 NeoBundle 'Shougo/vimshell.vim'
+" Unite
+NeoBundle 'Shougo/unite.vim'
+" Unite.vim で最近使ったファイルを表示できるようにする
+NeoBundle 'Shougo/neomru.vim'
+" コメントを複数行簡単に入れられる
+NeoBundle 'tomtom/tcomment_vim'
 
 call neobundle#end()
  
@@ -149,7 +159,9 @@ let g:neosnippet#snippets_directory = s:my_snippet
 "Quick <ESC>
 imap <C-j> <ESC>
 
-" VimShell関連
+"---------------------------
+" Start VimShell Settings.
+"---------------------------
 " ,rs: run shell シェルを起動
 nnoremap <silent> ,rs :VimShell<CR>
 " ,rpy: run python pythonを非同期で起動
@@ -158,3 +170,32 @@ nnoremap <silent> ,rpy : VimShellInteractive python<CR>
 vmap <silent> ,ss :VimShellSendString<CR>
 " 選択中に,ss: 非同期で開いたインタプリタに選択行を評価させる
 nnoremap <silent> ,ss <S-V>:VimShellSendString<CR>
+
+"---------------------------
+" End VimShell Settings.
+"---------------------------
+
+"---------------------------
+" Start unite Settings.
+"---------------------------
+" 入力モードで開始する
+let g:unite_enable_start_insert=1
+" バッファ一覧
+noremap <C-P> :Unite buffer<CR>
+" ファイル一覧
+noremap <C-N> :Unite -buffer-name=file file<CR>
+" 最近使ったファイルの一覧
+noremap <C-Z> :Unite file_mru<CR>
+" ウインドウを分割して開く
+au FileType unite nnoremap <silent> <buffer> <expr> <C-J> unite#do_action('split')
+au FileType unite inoremap <silent> <buffer> <expr> <C-J> unite#do_action('split')
+" ウインドウを縦に分割して開く
+au FileType unite nnoremap <silent> <buffer> <expr> <C-K> unite#do_action('vsplit')
+au FileType unite inoremap <silent> <buffer> <expr> <C-K> unite#do_action('vsplit')
+" ESCキーを２回押すと終了する
+au FileType unite nnoremap <silent> <buffer> <ESC><ESC> :q<CR>
+au FileType unite inoremap <silent> <buffer> <ESC><ESC> <ESC>:q<CR>
+
+"---------------------------
+" End unite Settings.
+"---------------------------
