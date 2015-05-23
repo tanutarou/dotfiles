@@ -12,7 +12,7 @@ set number
 colorscheme molokai
 
 "文字コード
-set fileencodings=cp932
+"set fileencodings=cp932
 
 "---------------------------
 " Start Neobundle Settings.
@@ -25,7 +25,15 @@ call neobundle#begin(expand('~/.vim/bundle/'))
  
 " プラグインたち
 NeoBundleFetch 'Shougo/neobundle.vim'
-NeoBundle 'Shougo/vimproc' 
+NeoBundle 'Shougo/vimproc', {
+    \ 'build' : {
+    \     'windows' : 'make -f make_mingw32.mak',
+    \     'cygwin' : 'make -f make_cygwin.mak',
+    \     'mac' : 'make -f make_mac.mak',
+    \     'unix' : 'make -f make_unix.mak',
+    \    },
+    \ }
+
 " ソースコードを素早く実行
 NeoBundle 'thinca/vim-quickrun'
 
@@ -40,3 +48,7 @@ NeoBundleCheck
 "-------------------------
 " End Neobundle Settings.
 "-------------------------
+
+" <C-c> で実行を強制終了させる
+" quickrun.vim が実行していない場合には <C-c> を呼び出す
+nnoremap <expr><silent> <C-c> quickrun#is_running() ? quickrun#sweep_sessions() : "\<C-c>"
