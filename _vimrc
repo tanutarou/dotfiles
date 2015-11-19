@@ -1,3 +1,8 @@
+" release autogroup in MyAutoCmd
+augroup MyAutoCmd
+	autocmd!
+augroup END
+
 "タブ
 set tabstop=4
 set softtabstop=0
@@ -11,6 +16,14 @@ set number
 set smartcase
 " 検索ワードの最初の文字を入力した時点で検索を開始する
 set incsearch
+" 検索マッチテキストをハイライト
+set hlsearch
+" 補完時に大文字小文字を区別しない
+set infercase
+" Swapファイル無効化
+set nowritebackup
+set nobackup
+set noswapfile
 
 "カラースキーマ
 colorscheme molokai
@@ -20,6 +33,9 @@ colorscheme molokai
 
 "フォント
 "set guifont=Ricty
+
+"key map
+command! -bar -range=% Reverse <line1>,<line2>g/^/m<line1>-1|nohl
 
 "---------------------------
 " Start Neobundle Settings.
@@ -60,6 +76,8 @@ NeoBundle 'Shougo/unite.vim'
 NeoBundle 'Shougo/neomru.vim'
 " コメントを複数行簡単に入れられる
 NeoBundle 'tomtom/tcomment_vim'
+" for LaTeX"
+NeoBundle 'lervag/vimtex'
 
 call neobundle#end()
  
@@ -199,3 +217,4 @@ au FileType unite inoremap <silent> <buffer> <ESC><ESC> <ESC>:q<CR>
 "---------------------------
 " End unite Settings.
 "---------------------------
+
