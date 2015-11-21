@@ -35,6 +35,7 @@ colorscheme molokai
 "set guifont=Ricty
 
 "key map
+"指定行を反転
 command! -bar -range=% Reverse <line1>,<line2>g/^/m<line1>-1|nohl
 
 "---------------------------
@@ -78,6 +79,8 @@ NeoBundle 'Shougo/neomru.vim'
 NeoBundle 'tomtom/tcomment_vim'
 " for LaTeX"
 NeoBundle 'lervag/vimtex'
+" for Git " 
+NeoBundle 'tpope/vim-fugitive'
 
 call neobundle#end()
  
