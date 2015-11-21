@@ -68,7 +68,7 @@ NeoBundle 'Shougo/neocomplcache'
 NeoBundle 'Shougo/neosnippet'
 NeoBundle 'Shougo/neosnippet-snippets'
 " Python
-NeoBundle 'davidhalter/jedi-vim'
+" NeoBundle 'davidhalter/jedi-vim'
 " Vim shell
 NeoBundle 'Shougo/vimshell.vim'
 " Unite
@@ -81,6 +81,10 @@ NeoBundle 'tomtom/tcomment_vim'
 NeoBundle 'lervag/vimtex'
 " for Git " 
 NeoBundle 'tpope/vim-fugitive'
+" for markup language "
+NeoBundle 'kannokanno/previm'
+" open url on browser from vim"
+NeoBundle 'open-browser.vim'
 
 call neobundle#end()
  
@@ -221,3 +225,23 @@ au FileType unite inoremap <silent> <buffer> <ESC><ESC> <ESC>:q<CR>
 " End unite Settings.
 "---------------------------
 
+"---------------------------
+" Start open-browser Settings
+"---------------------------
+let g:netrw_nogx = 1 " disable netrw's gx mapping
+nmap gx <Plug>(openbrowser-smart-search)
+vmap gx <Plug>(openbrowser-smart-search)
+"---------------------------
+" End open-browser Settings
+"---------------------------
+
+"---------------------------
+" Start previm Settings
+"---------------------------
+augroup PrevimSettings
+	autocmd!
+	autocmd BufNewFile,BufRead *.{md,mdwn,mkd,mkdn,mark*} set filetype=markdown
+augroup END
+"---------------------------
+" End previm Settings
+"---------------------------
