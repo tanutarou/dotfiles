@@ -245,3 +245,12 @@ augroup END
 "---------------------------
 " End previm Settings
 "---------------------------
+
+"---------------------------
+" Start Tex Settings
+"---------------------------
+let g:vimtex_latexmk_options = '-pdfdvi -latex=platex'
+let g:vimtex_latexmk_enabled = 1
+"---------------------------
+" End Tex Settings
+"---------------------------
