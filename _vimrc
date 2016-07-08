@@ -24,6 +24,8 @@ set infercase
 set nowritebackup
 set nobackup
 set noswapfile
+" conceal無効(texで数式になる)
+let g:tex_conceal=''
 
 "カラースキーマ
 colorscheme molokai
