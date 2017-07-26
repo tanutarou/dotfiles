@@ -12,3 +12,8 @@ git clone https://github.com/tomasr/molokai
 mv ./molokai/colors/molokai.vim ~/.vim/colors
 rm -rf ./molokai
 
+# sonic-template
+ln -s ./vim/sonictemplate-vim/base-comp.cpp ~/.vim/bundle/sonictemplate-vim/template/cpp/base-comp.cpp
+
+# neosnippet
+ln -s ./vim/neosnippet/cpp.snip ~/.vim/bundle/neosnippet-snippets/neosnippets/cpp.snip
