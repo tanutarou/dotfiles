@@ -40,6 +40,9 @@ colorscheme molokai
 "指定行を反転
 command! -bar -range=% Reverse <line1>,<line2>g/^/m<line1>-1|nohl
 
+"javascript入りのhtmlのシンタックスの設定
+au BufRead *.html set filetype=htmlm4
+
 "---------------------------
 " Start Neobundle Settings.
 "---------------------------
@@ -80,13 +83,17 @@ NeoBundle 'Shougo/neomru.vim'
 " コメントを複数行簡単に入れられる
 NeoBundle 'tomtom/tcomment_vim'
 " for LaTeX"
-NeoBundle 'lervag/vimtex'
+" NeoBundle 'lervag/vimtex'
 " for Git " 
 NeoBundle 'tpope/vim-fugitive'
 " for markup language "
 NeoBundle 'kannokanno/previm'
 " open url on browser from vim"
 NeoBundle 'open-browser.vim'
+" Javascript系
+NeoBundle 'hail2u/vim-css3-syntax'
+" NeoBundle 'taichouchou2/html5.vim'
+NeoBundle 'pangloss/vim-javascript'
 
 call neobundle#end()
  
