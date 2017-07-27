@@ -1,6 +1,7 @@
 #! /bin/bash
 ln -s ~/dotfiles/_vimrc ~/.vimrc
 ln -s ~/dotfiles/_latexmkrc ~/.latexmkrc
+ln -s ~/dotfiles/_bashrc ~/.bashrc
 
 # NeoBundle
 mkdir -p ~/.vim/bundle
