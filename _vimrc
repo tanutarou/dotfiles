@@ -184,10 +184,19 @@ if has('conceal')
 endif
 
 " my snippetファイルの場所を定義
-let s:my_snippet = '~/.vim/snippets/'
+let s:my_snippet = '~/dotfiles/vim/neosnippet/'
 let g:neosnippet#snippets_directory = s:my_snippet
+
 "---------------------------
-" Start neosnippet Settings.
+" End neosnippet Settings.
+"---------------------------
+
+"---------------------------
+" Start sonictemplate-vim Settings.
+"---------------------------
+let g:sonictemplate_vim_template_dir = '~/dotfiles/vim/sonictemplate-vim/'
+"---------------------------
+" End sonictemplate-vim Settings.
 "---------------------------
 
 "Quick <ESC>
