@@ -1,6 +1,7 @@
 include c.snip
 
 snippet unionfind
+    const int MAX_N = ${0:TARGET}
     int par[MAX_N], tree_rank[MAX_N];
     void init(int n){
         for(int i=0; i<n; i++){
@@ -76,14 +77,19 @@ abbr get prime list and is_prime list
 
 snippet dijkstra
 abbr get shortest path
+    const int MAX_N = ${0:TARGET}
     struct edge{int to, cost;};
     typedef pair<int, int> P;
 
-    int n;
     vector<edge> G[MAX_N];
     int d[MAX_N];
 
-    void dijkstra(int s){
+    /*
+    ダイクストラ法による単一始点最短経路問題solver
+    n : ノード数
+    s : 開始ノード(0-indexed)
+    */
+    void dijkstra(int n, int s){
         priority_queue<P, vector<P>, greater<P> > que;
         fill(d, d+n, INF);
         d[s] = 0;
