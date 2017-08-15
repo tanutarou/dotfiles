@@ -34,7 +34,7 @@ colorscheme molokai
 "set fileencodings=cp932
 
 "フォント
-"set guifont=Ricty
+set gfn=Monospace\ 12
 
 "key map
 "指定行を反転
