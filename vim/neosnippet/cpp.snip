@@ -35,11 +35,18 @@ snippet unionfind
 snippet gcd
 abbr get greatest common divisor
     long long gcd(long long a, long long b){
-      int c;
+      long long c;
       while ( a != 0 ) {
          c = a; a = b%a; b = c;
       }
       return b;
+    }
+
+snippet lcm
+abbr get least common multiple
+    long long lcm(long long a, long long b){
+        if(a == 0 || b == 0) return 0;
+        return a / gcd(a, b) * b;
     }
 
 snippet eratos
