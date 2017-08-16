@@ -2,6 +2,9 @@ include c.snip
 
 snippet comb
 abbr calc combination
+    const int MAX_N = ${1};
+    ll fact[MAX_N];
+    ll factinv[MAX_N];
     long long mod_pow(long long x, long long n, long long mod){
         long long res = 1;
         while(n > 0){
@@ -23,7 +26,7 @@ abbr calc combination
 
     //階乗の逆元のリストを作る
     void make_factinv_tbl(long long n, long long mod){
-        factinv[0] = -1; //0の逆元は存在しない
+        factinv[0] = 1; //0の逆元は存在しない
         for(long long i=1; i<=n; i++){
             factinv[i] = mod_pow(fact[i], mod-2, mod);
         }
