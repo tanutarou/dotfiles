@@ -1,5 +1,48 @@
 include c.snip
 
+snippet comb
+abbr calc combination
+    long long mod_pow(long long x, long long n, long long mod){
+        long long res = 1;
+        while(n > 0){
+            if(n & 1) res = res * x % mod;
+            x = x*x % mod;
+            n >>= 1;
+        }
+        return res;
+    }
+
+    //階乗のリストを作る
+    void make_fact_tbl(long long n, long long mod){
+        fact[0] = 1;
+        for(long long i=1; i<=n; i++){
+            fact[i] = fact[i-1] * i;
+            fact[i] %= mod;
+        }
+    }
+
+    //階乗の逆元のリストを作る
+    void make_factinv_tbl(long long n, long long mod){
+        factinv[0] = -1; //0の逆元は存在しない
+        for(long long i=1; i<=n; i++){
+            factinv[i] = mod_pow(fact[i], mod-2, mod);
+        }
+    }
+
+    //組み合わせの計算に必要な情報の作成
+    void comb_init(long long n, long long mod){
+        make_fact_tbl(n, mod);
+        make_factinv_tbl(n, mod);
+    }
+
+    //組み合わせの計算
+    long long comb(long long n, long long k, long long mod){
+        if(n < k) return 0;
+        if(k == 0 || n-k == 0) return 1;
+        //printf("n:%lld k:%lld n-k:%lld\n", fact[n], factinv[k], factinv[n-k]);
+        return ((fact[n] * factinv[k]) % mod) * factinv[n-k] % mod;
+    }
+
 snippet mod_inverse
     /*
      * 拡張ユークリッドの互除法
