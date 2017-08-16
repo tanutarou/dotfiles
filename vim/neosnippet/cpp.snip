@@ -1,5 +1,66 @@
 include c.snip
 
+snippet mod_inverse
+    /*
+     * 拡張ユークリッドの互除法
+     * ax + by = gcd(a, b)の解x,yを求める
+     * 戻り値 : gcd(a, b)
+     */
+    long long extgcd(long long a, long long b, long long& x, long long& y){
+        long long d = a;
+        if(b != 0){
+            d = extgcd(b, a%b, y, x);
+            y -= (a / b) * x;
+        }else{
+            x = 1;
+            y = 0;
+        }
+        return d;
+    }
+    /*
+    *  剰余類環における逆元
+    *  ax=1 (mod m)を満たすxを求める
+    *  注意：a, mが互いに素な場合に使用すること
+    */
+    long long mod_inverse(long long a, long long m){
+        long long x, y;
+        extgcd(a, m, x, y);
+        cout << x << endl;
+        cout << y << endl;
+        return (m + x % m) % m;	//負の数対策
+    }
+
+snippet mod_pow
+abbr calc x^n : O(log(n))
+    long long mod_pow(long long x, long long n, long long mod){
+        long long res = 1;
+        while(n > 0){
+            if(n & 1) res = res * x % mod;
+            x = x*x % mod;
+            n >>= 1;
+        }
+        return res;
+    }
+
+snippet extgcd
+abbr solve ax + by = gcd(a,b)
+    /*
+     * 拡張ユークリッドの互除法
+     * ax + by = gcd(a, b)の解x,yを求める
+     * 戻り値 : gcd(a, b)
+    */
+    long long extgcd(long long a, long long b, long long& x, long long& y){
+        long long d = a;
+        if(b != 0){
+            d = extgcd(b, a%b, y, x);
+            y -= (a / b) * x;
+        }else{
+            x = 1;
+            y = 0;
+        }
+        return d;
+    }
+
 snippet kruskal
 abbr get minimum spanning tree 
     // Union Find
