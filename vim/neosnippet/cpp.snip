@@ -146,13 +146,12 @@ abbr get minimum spanning tree
         return e1.cost < e2.cost;
     }
 
-    const int MAX_E = ${0};
-    edge es[MAX_E];
-    int kruskal(int node_n, int edge_n){
-        sort(es, es + edge_n, comp);
+    vector<edge> es;
+    int kruskal(int node_n){
+        sort(es.begin(), es.end(), comp);
         init_union_find(node_n);
         int res = 0;
-        for(int i=0; i<edge_n; i++){
+        for(int i=0; i<es.size(); i++){
             edge e = es[i];
             if(!same(e.u, e.v)){
                 unite(e.u, e.v);
