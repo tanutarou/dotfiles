@@ -24,6 +24,8 @@ set infercase
 set nowritebackup
 set nobackup
 set noswapfile
+" conceal無効(texで数式になる)
+let g:tex_conceal=''
 
 "カラースキーマ
 colorscheme molokai
@@ -32,11 +34,14 @@ colorscheme molokai
 "set fileencodings=cp932
 
 "フォント
-"set guifont=Ricty
+set gfn=Monospace\ 12
 
 "key map
 "指定行を反転
 command! -bar -range=% Reverse <line1>,<line2>g/^/m<line1>-1|nohl
+
+"javascript入りのhtmlのシンタックスの設定
+au BufRead *.html set filetype=htmlm4
 
 "---------------------------
 " Start Neobundle Settings.
@@ -77,14 +82,16 @@ NeoBundle 'Shougo/unite.vim'
 NeoBundle 'Shougo/neomru.vim'
 " コメントを複数行簡単に入れられる
 NeoBundle 'tomtom/tcomment_vim'
-" for LaTeX"
-"NeoBundle 'lervag/vimtex'
 " for Git " 
 NeoBundle 'tpope/vim-fugitive'
 " for markup language "
 NeoBundle 'kannokanno/previm'
 " open url on browser from vim"
 NeoBundle 'open-browser.vim'
+" Javascript系
+NeoBundle 'hail2u/vim-css3-syntax'
+" NeoBundle 'taichouchou2/html5.vim'
+NeoBundle 'pangloss/vim-javascript'
 
 call neobundle#end()
  
@@ -181,10 +188,19 @@ if has('conceal')
 endif
 
 " my snippetファイルの場所を定義
-let s:my_snippet = '~/.vim/snippets/'
+let s:my_snippet = '~/dotfiles/vim/neosnippet/'
 let g:neosnippet#snippets_directory = s:my_snippet
+
 "---------------------------
-" Start neosnippet Settings.
+" End neosnippet Settings.
+"---------------------------
+
+"---------------------------
+" Start sonictemplate-vim Settings.
+"---------------------------
+let g:sonictemplate_vim_template_dir = '~/dotfiles/vim/sonictemplate-vim/'
+"---------------------------
+" End sonictemplate-vim Settings.
 "---------------------------
 
 "Quick <ESC>

@@ -1,0 +1,293 @@
+include c.snip
+
+snippet search_ternary
+abbr ternary search
+    /*
+     * 3分探索(下に凸のsolver)
+     * 上に凸の場合は関数の値にマイナスをつける
+     */
+    double f(double x){
+        return pow((x-5.0), 2);
+    }
+    double ternary_search(double left, double right, int loop){
+        for(int i=0; i < loop; i++){
+            double x1 = left + (right - left) * 1.0 / 3.0;
+            double x2 = left + (right - left) * 2.0 / 3.0;
+            if(f(x1) < f(x2)){
+                right = x2;
+            }else{
+                left = x1;
+            }
+        }
+        return (left + right) / 2;
+    }
+
+snippet comb
+abbr calc combination
+    const int MAX_N = ${1};
+    ll fact[MAX_N];
+    ll factinv[MAX_N];
+    long long mod_pow(long long x, long long n, long long mod){
+        long long res = 1;
+        while(n > 0){
+            if(n & 1) res = res * x % mod;
+            x = x*x % mod;
+            n >>= 1;
+        }
+        return res;
+    }
+
+    //階乗のリストを作る
+    void make_fact_tbl(long long n, long long mod){
+        fact[0] = 1;
+        for(long long i=1; i<=n; i++){
+            fact[i] = fact[i-1] * i;
+            fact[i] %= mod;
+        }
+    }
+
+    //階乗の逆元のリストを作る
+    void make_factinv_tbl(long long n, long long mod){
+        factinv[0] = 1; //0の逆元は存在しない
+        for(long long i=1; i<=n; i++){
+            factinv[i] = mod_pow(fact[i], mod-2, mod);
+        }
+    }
+
+    //組み合わせの計算に必要な情報の作成
+    void comb_init(long long n, long long mod){
+        make_fact_tbl(n, mod);
+        make_factinv_tbl(n, mod);
+    }
+
+    //組み合わせの計算
+    long long comb(long long n, long long k, long long mod){
+        if(n < k) return 0;
+        if(k == 0 || n-k == 0) return 1;
+        //printf("n:%lld k:%lld n-k:%lld\n", fact[n], factinv[k], factinv[n-k]);
+        return ((fact[n] * factinv[k]) % mod) * factinv[n-k] % mod;
+    }
+
+snippet mod_inverse
+    /*
+     * 拡張ユークリッドの互除法
+     * ax + by = gcd(a, b)の解x,yを求める
+     * 戻り値 : gcd(a, b)
+     */
+    long long extgcd(long long a, long long b, long long& x, long long& y){
+        long long d = a;
+        if(b != 0){
+            d = extgcd(b, a%b, y, x);
+            y -= (a / b) * x;
+        }else{
+            x = 1;
+            y = 0;
+        }
+        return d;
+    }
+    /*
+    *  剰余類環における逆元
+    *  ax=1 (mod m)を満たすxを求める
+    *  注意：a, mが互いに素な場合に使用すること
+    */
+    long long mod_inverse(long long a, long long m){
+        long long x, y;
+        extgcd(a, m, x, y);
+        cout << x << endl;
+        cout << y << endl;
+        return (m + x % m) % m;	//負の数対策
+    }
+
+snippet mod_pow
+abbr calc x^n : O(log(n))
+    long long mod_pow(long long x, long long n, long long mod){
+        long long res = 1;
+        while(n > 0){
+            if(n & 1) res = res * x % mod;
+            x = x*x % mod;
+            n >>= 1;
+        }
+        return res;
+    }
+
+snippet extgcd
+abbr solve ax + by = gcd(a,b)
+    /*
+     * 拡張ユークリッドの互除法
+     * ax + by = gcd(a, b)の解x,yを求める
+     * 戻り値 : gcd(a, b)
+    */
+    long long extgcd(long long a, long long b, long long& x, long long& y){
+        long long d = a;
+        if(b != 0){
+            d = extgcd(b, a%b, y, x);
+            y -= (a / b) * x;
+        }else{
+            x = 1;
+            y = 0;
+        }
+        return d;
+    }
+
+snippet kruskal
+abbr get minimum spanning tree 
+    // Union Find
+    const int MAX_N = ${1};
+    int par[MAX_N], tree_rank[MAX_N];
+    void init_union_find(int n){
+        for(int i=0; i<n; i++){
+            par[i] = i;
+            tree_rank[i] = 0;
+        }
+    }
+
+    int root(int x){
+        return par[x] == x ? x : par[x] = root(par[x]);
+    }
+
+    bool same(int x, int y){
+        return root(x) == root(y);
+    }
+
+    void unite(int x, int y){
+        x = root(x);
+        y = root(y);
+        if(x == y) return;
+
+        if(tree_rank[x] < tree_rank[y]){
+            par[x] = y;
+        }else{
+            par[y] = x;
+            if(tree_rank[x] == tree_rank[y]) tree_rank[x]++;
+        }
+    }
+
+    // Kruskal
+    struct edge{int u, v, cost;};
+    bool comp(const edge& e1, const edge& e2){
+        return e1.cost < e2.cost;
+    }
+
+    vector<edge> es;
+    int kruskal(int node_n){
+        sort(es.begin(), es.end(), comp);
+        init_union_find(node_n);
+        int res = 0;
+        for(int i=0; i<es.size(); i++){
+            edge e = es[i];
+            if(!same(e.u, e.v)){
+                unite(e.u, e.v);
+                res += e.cost;
+            }
+        }
+        return res;
+    }
+
+snippet unionfind
+    const int MAX_N = ${0:TARGET}
+    int par[MAX_N], tree_rank[MAX_N];
+    void init(int n){
+        for(int i=0; i<n; i++){
+            par[i] = i;
+            tree_rank[i] = 0;
+        }
+    }
+
+    int root(int x){
+        return par[x] == x ? x : par[x] = root(par[x]);
+    }
+
+    bool same(int x, int y){
+        return root(x) == root(y);
+    }
+
+    void unite(int x, int y){
+        x = root(x);
+        y = root(y);
+        if(x == y) return;
+
+        if(tree_rank[x] < tree_rank[y]){
+            par[x] = y;
+        }else{
+            par[y] = x;
+        }else{
+            par[y] = x;
+            if(tree_rank[x] == tree_rank[y]) tree_rank[x]++;
+        }
+    }
+
+snippet gcd
+abbr get greatest common divisor
+    long long gcd(long long a, long long b){
+      long long c;
+      while ( a != 0 ) {
+         c = a; a = b%a; b = c;
+      }
+      return b;
+    }
+
+snippet lcm
+abbr get least common multiple
+    long long lcm(long long a, long long b){
+        if(a == 0 || b == 0) return 0;
+        return a / gcd(a, b) * b;
+    }
+
+snippet eratos
+abbr get prime list and is_prime list
+    const int N = ${0:TARGET};
+    bool is_prime[N+1];
+    vector<long long> prime;
+    void Eratos(){
+        for(int i=0; i<N; i++){
+            is_prime[i] = true;
+        }
+        is_prime[0] = is_prime[1] = false;
+        for(int i=2; i<=N; i++){
+            if(is_prime[i]){
+                for(int j=2; i*j<=N; j++){
+                    is_prime[i*j] = false;
+                }
+            }
+        }
+
+        for(int i=2; i<=N; i++){
+            if(is_prime[i]){
+                prime.push_back(i);
+            }
+        }
+    }
+
+snippet dijkstra
+abbr get shortest path
+    const int MAX_N = ${0:TARGET}
+    struct edge{int to, cost;};
+    typedef pair<int, int> P;
+
+    vector<edge> G[MAX_N];
+    long long d[MAX_N];
+
+    /*
+    ダイクストラ法による単一始点最短経路問題solver
+    n : ノード数
+    s : 開始ノード(0-indexed)
+    */
+    void dijkstra(int n, int s){
+        priority_queue<P, vector<P>, greater<P> > que;
+        fill(d, d+n, INF);
+        d[s] = 0;
+        que.push(P(0, s));
+    
+        while(!que.empty()){
+            P p = que.top(); que.pop();
+            int v = p.second;
+            if(d[v] < p.first) continue;
+            for(int i=0; i < G[v].size(); i++){
+                edge e = G[v][i];
+                if(d[e.to] > d[v] + e.cost){
+                    d[e.to] = d[v] + e.cost;
+                    que.push(P(d[e.to], e.to));
+                }
+            }
+        }
+    }
