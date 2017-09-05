@@ -78,7 +78,7 @@ NeoBundle 'Shougo/neomru.vim'
 " コメントを複数行簡単に入れられる
 NeoBundle 'tomtom/tcomment_vim'
 " for LaTeX"
-NeoBundle 'lervag/vimtex'
+"NeoBundle 'lervag/vimtex'
 " for Git " 
 NeoBundle 'tpope/vim-fugitive'
 " for markup language "
@@ -136,6 +136,12 @@ let g:neocomplcache_lock_buffer_name_pattern = '\*ku\*'
 let g:neocomplcache_dictionary_filetype_lists = {
     \ 'default' : ''
     \ }
+
+" pythonが落ちる問題の回避
+if !exists('g:neocomplcache_omni_patterns')
+	let g:neocomplcache_omni_patterns = {}
+endif
+let g:neocomplcache_omni_patterns.python = ''
 
 " Plugin key-mappings.
 inoremap <expr><C-g>     neocomplcache#undo_completion()
@@ -249,8 +255,9 @@ augroup END
 "---------------------------
 " Start Tex Settings
 "---------------------------
-let g:vimtex_latexmk_options = '-pdfdvi -latex=platex'
-let g:vimtex_latexmk_enabled = 1
+"let g:vimtex_latexmk_options = '-pdfdvi -latex=platex'
+"let g:vimtex_latexmk_enabled = 1
 "---------------------------
 " End Tex Settings
 "---------------------------
+
