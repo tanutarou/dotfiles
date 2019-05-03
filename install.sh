@@ -18,3 +18,11 @@ sudo apt install python3-pip
 sudo apt install python3-dev
 sudo apt install virtualenv
 sudo pip install virtualenvwrapper
+
+# tig
+git clone https://github.com/jonas/tig.git
+cd tig
+./autogen.sh 
+./configure --without-ncurse
+make prefix=/usr/local
+sudo make install prefix=/usr/local
